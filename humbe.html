@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Humbe | Experiencia Inmersiva</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;500;800&display=swap" rel="stylesheet">
+
+    <style>
+        /* === ESTILOS NUEVOS PARA EL ENCABEZADO APPLE === */
+
+.apple-header {
+    display: flex;
+    justify-content: space-between; /* Separa info a la izq e iconos a la der */
+    align-items: center;
+    margin-bottom: 30px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.track-info-container {
+    display: flex;
+    align-items: center;
+    gap: 15px; /* Espacio entre foto y texto */
+}
+
+/* La imagen pequeña de la portada */
+.mini-cover {
+    width: 50px;
+    height: 50px;
+    border-radius: 8px; /* Bordes redondeados estilo Apple */
+    object-fit: cover;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+}
+
+.track-text {
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+}
+
+.song-title-apple {
+    font-size: 1rem;
+    font-weight: 700;
+    color: #fff;
+    margin: 0;
+    line-height: 1.2;
+}
+
+.artist-name-apple {
+    font-size: 0.85rem;
+    color: rgba(255, 255, 255, 0.6); /* Grisáceo */
+    font-weight: 500;
+}
+
+.apple-icons {
+    display: flex;
+    gap: 15px;
+    opacity: 0.7;
+    cursor: pointer;
+}
+
+/* Ajuste para móvil */
+@media (max-width: 480px) {
+    .apple-header {
+        margin-bottom: 20px;
+    }
+    .song-title-apple { font-size: 0.9rem; }
+}
+
+        :root {
+            --bg-deep: #050a14;
+            --orb-cyan: #00f2ff;
+            --orb-blue: #0051ff;
+            --text-primary: #ffffff;
+            --text-dim: rgba(255, 255, 255, 0.4); /* Texto inactivo */
+            --accent-color: #5eead4;
+            
+            --glass-bg: rgba(255, 255, 255, 0.05);
+            --glass-border: rgba(255, 255, 255, 0.1);
+            --glass-blur: 40px;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-deep);
+            color: var(--text-primary);
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
+
+        /* ========================================
+           FONDO ANIMADO
+        ======================================== */
+        .liquid-background-container {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            overflow: hidden; z-index: -2; background: var(--bg-deep);
+        }
+        .orb {
+            position: absolute; border-radius: 50%;
+            filter: blur(80px); opacity: 0.6; will-change: transform;
+        }
+        .orb-1 { width: 50vw; height: 50vw; background: var(--orb-cyan); top: -10%; left: -10%; animation: move-1 25s infinite alternate ease-in-out; }
+        .orb-2 { width: 50vw; height: 50vw; background: var(--orb-blue); bottom: -10%; right: -10%; animation: move-2 30s infinite alternate ease-in-out; }
+        
+        @keyframes move-1 { 0% {transform:translate(0,0);} 100% {transform:translate(60vw, 50vh);} }
+        @keyframes move-2 { 0% {transform:translate(0,0);} 100% {transform:translate(-60vw, -50vh);} }
+
+        /* ========================================
+           NAVBAR
+        ======================================== */
+        .navbar {
+            position: fixed; top: 0; width: 100%; z-index: 1000; padding: 15px 0;
+            background: rgba(5, 10, 20, 0.6); backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+        .nav-list { display: flex; justify-content: center; list-style: none; gap: 20px; }
+        .nav-link { text-decoration: none; color: var(--text-dim); text-transform: uppercase; font-size: 0.8rem; font-weight: 600; letter-spacing: 1px; transition: 0.3s; }
+        .nav-link:hover { color: #fff; }
+
+        /* ========================================
+           ESTRUCTURA PRINCIPAL
+        ======================================== */
+        .main-container { max-width: 800px; margin: 100px auto 40px; padding: 0 20px; }
+
+        .glass-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(var(--glass-blur)); -webkit-backdrop-filter: blur(var(--glass-blur));
+            border: 1px solid var(--glass-border);
+            border-radius: 24px;
+            padding: 40px;
+            margin-bottom: 50px;
+            /* Entrada suave */
+            opacity: 0; transform: translateY(30px);
+            animation: fadeIn 1s forwards;
+        }
+
+        @keyframes fadeIn { to { opacity: 1; transform: translateY(0); } }
+
+        h1, h2 { margin-bottom: 20px; }
+        h1 { font-size: 3.5rem; letter-spacing: -2px; background: linear-gradient(to right, #fff, var(--accent-color)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        p { color: #cbd5e1; line-height: 1.6; margin-bottom: 15px; }
+
+        /* ========================================
+           ESTILO APPLE MUSIC LYRICS (NUEVO)
+        ======================================== */
+        
+        /* Reproductor de Audio */
+        audio {
+            width: 100%;
+            margin-bottom: 20px;
+            border-radius: 30px;
+            opacity: 0.8;
+        }
+        
+        /* Contenedor de las letras */
+        .lyrics-wrapper {
+            height: 400px; /* Altura fija para hacer scroll */
+            overflow-y: scroll;
+            position: relative;
+            padding: 50px 0; /* Espacio arriba y abajo para que la primera linea pueda centrarse */
+            mask-image: linear-gradient(to bottom, transparent 0%, black 20%, black 80%, transparent 100%);
+            -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 20%, black 80%, transparent 100%);
+        }
+
+        /* Ocultar barra de scroll pero mantener funcionalidad */
+        .lyrics-wrapper::-webkit-scrollbar { display: none; }
+        .lyrics-wrapper { -ms-overflow-style: none; scrollbar-width: none; }
+
+        /* Estilo de cada linea */
+        .lyric-line {
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: var(--text-primary);
+            text-align: left; /* Alineado a la izquierda como Apple */
+            margin-bottom: 30px;
+            cursor: pointer;
+            transition: all 0.5s cubic-bezier(0.25, 1, 0.5, 1);
+            
+            /* ESTADO INACTIVO (Default) */
+            opacity: 0.3; 
+            filter: blur(1.5px);
+            transform: scale(0.95);
+            transform-origin: left center;
+        }
+
+        /* ESTADO ACTIVO (Iluminado) */
+        .lyric-line.active {
+            opacity: 1;
+            filter: blur(0px);
+            transform: scale(1);
+            text-shadow: 0 0 20px rgba(255, 255, 255, 0.3); /* Resplandor suave */
+            color: #fff;
+        }
+
+        /* Efecto Hover para saltar a esa parte */
+        .lyric-line:hover {
+            opacity: 0.7;
+            filter: blur(0px);
+        }
+
+        /* Video Responsive */
+        .video-container { position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; border-radius: 16px; }
+        .video-container iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }
+
+        footer { text-align: center; color: var(--text-dim); padding: 40px; font-size: 0.8rem; }
+    </style>
+</head>
+<body>
+
+    <div class="liquid-background-container">
+        <div class="orb orb-1"></div>
+        <div class="orb orb-2"></div>
+    </div>
+
+    <nav class="navbar">
+        <ul class="nav-list">
+            <li><a href="#portada" class="nav-link">Portada</a></li>
+            <li><a href="#video" class="nav-link">Video</a></li>
+            <li><a href="#lyrics" class="nav-link">Letra Sincronizada</a></li>
+        </ul>
+    </nav>
+
+    <div class="main-container">
+
+        <section id="portada" class="glass-card" style="text-align: center;">
+            <p style="text-transform: uppercase; letter-spacing: 3px; color: var(--accent-color); font-weight: bold;">Análisis Musical</p>
+            <h1>HUMBE - REM</h1>
+            <p>Universidad Tres Culturas  | Analisis y redaccion de textos</p>
+               <p id="project-date" style="font-size:0.95rem; color: var(--text-dim); margin-top:8px;"></p>
+            <hr style="border: 0; border-top: 1px solid rgba(255,255,255,0.1); margin: 20px 0;">
+            <p style="font-size: 0.9rem; color: var(--text-dim);">Integrantes: esme, susi, Carlos</p>
+        </section>
+<section id="about" class="glass-card">
+            <h3 class="section-label">Descripción</h3>
+            <h2>Estética Sonora y Visual</h2>
+            <p>
+                En este trabajo realizaré un análisis detallado de la canción "REM" del artista mexicano Humbe. El objetivo principal es descifrar cómo el cantante utiliza tanto la poesía de sus letras como el lenguaje visual de su video para transmitir un mensaje profundo sobre la soledad y la negación ante una ruptura amorosa.
+            </p>
+           
+        </section>
+
+        <section id="video" class="glass-card">
+            <h2>Video Oficial</h2>
+            <div class="video-container">
+                <iframe width="560" height="315" src="HUMBE-REM.mp4" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>            </div>
+        </section>
+
+        <section id="lyrics" class="glass-card">
+    
+    <div class="apple-header">
+        <div class="track-info-container">
+            <img src="portada.jpg" alt="Portada" class="mini-cover">
+            
+            <div class="track-text">
+                <h3 class="song-title-apple">REM</h3> <span class="artist-name-apple">Humbe</span>   </div>
+        </div>
+
+        <div class="apple-icons">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="var(--text-dim)" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="var(--text-dim)" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="12" cy="12" r="2" fill="currentColor"/>
+                <circle cx="19" cy="12" r="2" fill="currentColor"/>
+                <circle cx="5" cy="12" r="2" fill="currentColor"/>
+            </svg>
+        </div>
+    </div>
+
+    <audio id="audio-player" controls style="width: 100%; margin-bottom: 20px; opacity: 0.6;">
+        <source src="cancion.mp3" type="audio/mpeg">
+    </audio>
+
+    <div class="lyrics-wrapper" id="lyrics-container">
+        </div>
+</section>
+
+        <section class="glass-card">
+            <h2>Interpretación letra</h2>
+            <p>La canción “REM” de Humbe trata sobre lo difícil que es sacarte a alguien de la cabeza, especialmente cuando intentas usar el sueño para escapar de la tristeza.<br>
+
+Algunos puntos clave de la interpretación:<br>
+
+El sueño como refugio: Cuando la realidad duele (porque esa persona ya no te quiere o no está), muchas veces preferimos dormir para "apagar" el cerebro y dejar de sufrir un rato. Humbe intenta hacer esto: dormir para huir de su realidad.<br>
+
+¿Qué es la fase REM? Es la etapa del sueño donde descansamos más profundamente y donde soñamos más intensamente. Se llama así porque los ojos se mueven rápido bajo los párpados. Se supone que es el momento de mayor paz.<br>
+
+La traición de la mente: Lo triste de la canción es que su plan falla. Justo cuando entra en esa fase profunda (REM), en lugar de descansar, esa persona aparece en sus sueños.<br>
+
+No hay escapatoria: La canción refleja una gran frustración. Él se da cuenta de que no puede escapar de sus sentimientos ni siquiera durmiendo. Su propia mente lo "traiciona" trayendo recuerdos de quien quiere olvidar, justo en el momento en que está más vulnerable y relajado.<br>
+
+En resumen, “REM” nos dice que el dolor de un mal de amor puede ser tan fuerte que nos persigue hasta en los sueños, convirtiendo el lugar donde deberíamos descansar en otro espacio para extrañar.</p>
+        </section>
+
+            <section class="glass-card">
+            <h2>Interpretación video</h2>
+            <p>“REM” de Humbe trata sobre una contradicción dolorosa: intentar dormir para escapar de la tristeza de un amor no correspondido, pero descubrir que en los sueños esa persona está más presente que nunca.<br>
+
+El refugio fallido: Normalmente, dormimos para descansar y desconectar del mundo. Humbe intenta usar el sueño como una huida, cerrando los ojos para que la realidad deje de doler.<br>
+
+La trampa del sueño REM: La fase REM es cuando dormimos más profundo y soñamos más intenso. En la canción, en lugar de encontrar paz, esta fase se convierte en su peor enemigo. Su mente lo traiciona y trae de vuelta los recuerdos de esa persona justo cuando él está indefenso.<br>
+
+La conclusión: No importa cuánto intentes huir o controlar tu mente (como en los sueños lúcidos); si el sentimiento es fuerte, te perseguirá hasta en el descanso.<br>
+
+El significado del video musical<br>
+El video no cuenta una historia lineal, sino que usa imágenes para hacernos sentir lo que pasa dentro de su cabeza. Aquí te explico qué significa cada cosa de forma simple:<br>
+
+Oscuridad y espacios vacíos: El video es muy oscuro y minimalista. Esto representa el interior de su mente. Esos espacios vacíos son los rincones donde se esconden los recuerdos que él intenta evitar durante el día.<br>
+
+Humbe acostado pero inquieto: Lo vemos quieto, simulando que duerme, pero su cara muestra angustia. Esto simboliza el conflicto: su cuerpo intenta descansar, pero su mente y su corazón siguen despiertos y sufriendo. Es una tormenta por dentro y calma por fuera.<br>
+
+El movimiento de los ojos: Ver sus ojos moverse o su mirada nerviosa representa esa fase REM. Es la prueba física de que está soñando algo muy intenso y emocional, algo que no lo deja en paz.<br>
+
+Luces azules y parpadeos: Las luces frías (azules, violetas) y los cambios rápidos crean un ambiente de fantasía, como si no fuera real. Nos dicen que estamos dentro de un sueño, donde las escenas cambian sin aviso y los recuerdos aparecen de golpe.<br>
+
+La soledad absoluta: Humbe sale solo todo el tiempo. Esto nos dice que, al final, nadie puede acompañarte en tus sueños. El dolor de extrañar a alguien se vive en soledad; nadie puede entrar ahí a ayudarte a cargar esa pena.<br>
+
+Todo se repite (El ciclo): Las escenas parecen repetirse y no llegan a ningún lado. Esto refleja cómo se siente su corazón: atrapado en un ciclo donde intenta olvidar, falla, recuerda y vuelve a empezar. No avanza.<br>
+
+Un final sin solución: El video termina igual que empieza. No hay un final feliz ni un cierre. Esto significa que al despertar, el sentimiento sigue ahí. El sueño no curó nada; el recuerdo de esa persona sigue vivo.</p>
+        </section>
+
+    </div>
+
+    <footer>
+        &copy; 2024 Proyecto Escolar
+    </footer>
+
+    <script>
+        const lyricsData = [
+  { time: 0, text: "Me dormí para evitar que te pensara" },
+  { time: 7, text: "Qué burla, el lugar donde busco mi paz es donde estabas" },
+  { time: 14, text: "Me dormí con lágrimas mojadas" },
+  { time: 20, text: "Esperando mi séptimo sueño a ver si en ella remabas" },
+  { time: 27, text: "Me dormí pa poder escaparme (me dormí)" },
+  { time: 31, text: "Esquivando pensarte para yo sanar" },
+  { time: 36, text: "Poder descansar" },
+  { time: 43, text: "Y te vuelvo a soñar y te escucho decir" },
+  { time: 52, text: "Nos besamos si te animas" },
+  { time: 58, text: "Quédate a dormir acá" },
+  { time: 65, text: "Que llevas mucho tiempo solo" },
+  { time: 72, text: "Y yo te puеdo acompañar" },
+  { time: 79, text: "Y nos besamos a escondidas, quédate un poco más" },
+  { time: 85, text: "Dame más picos de dopamina, natural melatonina" },
+  { time: 89, text: "Tú puedes controlarlo todo y yo" },
+  { time: 94, text: "Quiero poder aprovechar el sueño" },
+  { time: 97, text: "Que no sé si yo te vuelvo a ver" },
+  { time: 99, text: "Si te levantas, seguramente no pueda volver" },
+  { time: 102, text: "Cierra los ojos, piensa en mí" },
+  { time: 105, text: "Yo siempre pienso en ti" },
+  { time: 109, text: "Difícil admitir que por ti me dormí" },
+  { time: 113, text: "Pero es lindo verte aquí" },
+  { time: 117, text: "Tan lindo verte aquí" },
+  { time: 130, text: "Aunque me sordee, aunque no lo vea" },
+  { time: 133, text: "Aunque en mi cabeza no sea la meta" },
+  { time: 137, text: "Muy, muy dentro de mí, te quiero aquí" },
+  { time: 140, text: "Toparnos en REM, besarnos again and again" },
+  { time: 145, text: "And again, and again, and again, and again" },
+  { time: 152, text: "And again, and again, and again, and again..." },
+  { time: 164, text: "Me dormí para ya no pensarte" },
+  { time: 167, text: "Y soñé que a lo lejos te encontraba" },
+  { time: 171, text: "Iba corriendo, pero no avanzaba" },
+  { time: 175, text: "Que te quedes al aire gritaba" },
+  { time: 179, text: "Me dormí, comencé a alucinarte" },
+  { time: 182, text: "En otro plano, por fin, te tocaba" },
+  { time: 184, text: "Pasamos horas en la cama" },
+  { time: 189, text: "Jugando a que el piso era lava" },
+  { time: 194, text: "Me dormí" },
+  { time: 197, text: "Me-me, me dormí" },
+  { time: 199, text: "Me-me-me, me dormí" },
+  { time: 202, text: "(Me-me-me) me-me-me, me dormí" },
+  { time: 204, text: "Me dormí, me dormí (que ahí afuera estoy muy solo)" },
+  { time: 208, text: "Me dormí" },
+  { time: 211, text: "Me dormí" },
+  { time: 214, text: "Compositores: Humberto Rodriguez Terrazas / Emiliano Rodríguez Terrazas Letra de REM © Humbe Sa De Cv" },
+];
+
+        const audioPlayer = document.getElementById('audio-player');
+        const lyricsContainer = document.getElementById('lyrics-container');
+
+        // 2. GENERAR HTML DE LAS LETRAS
+        function renderLyrics() {
+            lyricsContainer.innerHTML = ""; // Limpiar
+            lyricsData.forEach((line, index) => {
+                const p = document.createElement('div');
+                p.classList.add('lyric-line');
+                p.innerText = line.text;
+                p.dataset.index = index; // Guardar índice
+                
+                // Función extra: Si das click a la letra, la canción salta a ese segundo
+                p.addEventListener('click', () => {
+                    audioPlayer.currentTime = line.time;
+                    audioPlayer.play();
+                });
+
+                lyricsContainer.appendChild(p);
+            });
+        }
+
+        // 3. SINCRONIZAR
+        function syncLyrics() {
+            const currentTime = audioPlayer.currentTime;
+            
+            // Buscar cuál es la línea actual
+            // (La última línea cuyo tiempo sea menor o igual al tiempo actual)
+            let activeIndex = -1;
+            for (let i = 0; i < lyricsData.length; i++) {
+                if (currentTime >= lyricsData[i].time) {
+                    activeIndex = i;
+                } else {
+                    break; // Ya pasamos el tiempo, paramos
+                }
+            }
+
+            // Actualizar clases visuales
+            const lines = document.querySelectorAll('.lyric-line');
+            lines.forEach((line, index) => {
+                if (index === activeIndex) {
+                    line.classList.add('active');
+                    
+                    // SCROLL solo dentro del contenedor de letras, no la página
+                    const container = document.getElementById('lyrics-container');
+                    const lineTop = line.offsetTop;
+                    const lineHeight = line.offsetHeight;
+                    const containerHeight = container.clientHeight;
+                    const containerScrollTop = container.scrollTop;
+                    
+                    // Calcular scroll para centrar la línea
+                    const targetScroll = lineTop - (containerHeight / 2) + (lineHeight / 2);
+                    container.scrollTop = targetScroll;
+                    
+                } else {
+                    line.classList.remove('active');
+                }
+            });
+        }
+
+        // Inicializar
+        renderLyrics();
+
+        // Poner la fecha del proyecto debajo del texto de la universidad
+        (function setProjectDate(){
+            const el = document.getElementById('project-date');
+            if (!el) return;
+            const options = { year: 'numeric', month: 'long', day: 'numeric' };
+            const now = new Date();
+            el.textContent = now.toLocaleDateString('es-ES', options);
+        })();
+        
+        // Escuchar el evento de tiempo del audio
+        audioPlayer.addEventListener('timeupdate', syncLyrics);
+
+    </script>
+</body>
+</html>
