@@ -10,11 +10,10 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;500;800&display=swap" rel="stylesheet">
 
     <style>
-        /* === ESTILOS NUEVOS PARA EL ENCABEZADO APPLE === */
 
 .apple-header {
     display: flex;
-    justify-content: space-between; /* Separa info a la izq e iconos a la der */
+    justify-content: space-between; 
     align-items: center;
     margin-bottom: 30px;
     padding-bottom: 20px;
@@ -24,14 +23,13 @@
 .track-info-container {
     display: flex;
     align-items: center;
-    gap: 15px; /* Espacio entre foto y texto */
+    gap: 15px; 
 }
 
-/* La imagen pequeña de la portada */
 .mini-cover {
     width: 50px;
     height: 50px;
-    border-radius: 8px; /* Bordes redondeados estilo Apple */
+    border-radius: 8px; 
     object-fit: cover;
     box-shadow: 0 4px 10px rgba(0,0,0,0.3);
 }
@@ -52,7 +50,7 @@
 
 .artist-name-apple {
     font-size: 0.85rem;
-    color: rgba(255, 255, 255, 0.6); /* Grisáceo */
+    color: rgba(255, 255, 255, 0.6);
     font-weight: 500;
 }
 
@@ -63,7 +61,7 @@
     cursor: pointer;
 }
 
-/* Ajuste para móvil */
+
 @media (max-width: 480px) {
     .apple-header {
         margin-bottom: 20px;
@@ -76,7 +74,7 @@
             --orb-cyan: #00f2ff;
             --orb-blue: #0051ff;
             --text-primary: #ffffff;
-            --text-dim: rgba(255, 255, 255, 0.4); /* Texto inactivo */
+            --text-dim: rgba(255, 255, 255, 0.4); 
             --accent-color: #5eead4;
             
             --glass-bg: rgba(255, 255, 255, 0.05);
@@ -95,9 +93,6 @@
             min-height: 100vh;
         }
 
-        /* ========================================
-           FONDO ANIMADO
-        ======================================== */
         .liquid-background-container {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             overflow: hidden; z-index: -2; background: var(--bg-deep);
@@ -112,9 +107,6 @@
         @keyframes move-1 { 0% {transform:translate(0,0);} 100% {transform:translate(60vw, 50vh);} }
         @keyframes move-2 { 0% {transform:translate(0,0);} 100% {transform:translate(-60vw, -50vh);} }
 
-        /* ========================================
-           NAVBAR
-        ======================================== */
         .navbar {
             position: fixed; top: 0; width: 100%; z-index: 1000; padding: 15px 0;
             background: rgba(5, 10, 20, 0.6); backdrop-filter: blur(20px);
@@ -124,9 +116,6 @@
         .nav-link { text-decoration: none; color: var(--text-dim); text-transform: uppercase; font-size: 0.8rem; font-weight: 600; letter-spacing: 1px; transition: 0.3s; }
         .nav-link:hover { color: #fff; }
 
-        /* ========================================
-           ESTRUCTURA PRINCIPAL
-        ======================================== */
         .main-container { max-width: 800px; margin: 100px auto 40px; padding: 0 20px; }
 
         .glass-card {
@@ -136,76 +125,63 @@
             border-radius: 24px;
             padding: 40px;
             margin-bottom: 50px;
-            /* Entrada suave */
             opacity: 0; transform: translateY(30px);
-            animation: fadeIn 1s forwards;
+            animation: fadeIn 5s forwards;
         }
 
         @keyframes fadeIn { to { opacity: 1; transform: translateY(0); } }
 
         h1, h2 { margin-bottom: 20px; }
-        h1 { font-size: 3.5rem; letter-spacing: -2px; background: linear-gradient(to right, #fff, var(--accent-color)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        h1 { font-size: 3.5rem; letter-spacing: -2px; background: linear-gradient(to right, #fff, var(--accent-color)); -webkit-background-clip: text; -webkit-text-fill-color: transparent;}
         p { color: #cbd5e1; line-height: 1.6; margin-bottom: 15px; }
 
-        /* ========================================
-           ESTILO APPLE MUSIC LYRICS (NUEVO)
-        ======================================== */
-        
-        /* Reproductor de Audio */
         audio {
             width: 100%;
             margin-bottom: 20px;
             border-radius: 30px;
             opacity: 0.8;
         }
-        
-        /* Contenedor de las letras */
+    
         .lyrics-wrapper {
-            height: 400px; /* Altura fija para hacer scroll */
+            height: 400px; 
             overflow-y: scroll;
             position: relative;
-            padding: 50px 0; /* Espacio arriba y abajo para que la primera linea pueda centrarse */
+            padding: 50px 0; 
             mask-image: linear-gradient(to bottom, transparent 0%, black 20%, black 80%, transparent 100%);
             -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 20%, black 80%, transparent 100%);
         }
 
-        /* Ocultar barra de scroll pero mantener funcionalidad */
         .lyrics-wrapper::-webkit-scrollbar { display: none; }
         .lyrics-wrapper { -ms-overflow-style: none; scrollbar-width: none; }
 
-        /* Estilo de cada linea */
         .lyric-line {
             font-size: 1.8rem;
             font-weight: 800;
             color: var(--text-primary);
-            text-align: left; /* Alineado a la izquierda como Apple */
+            text-align: left; 
             margin-bottom: 30px;
             cursor: pointer;
             transition: all 0.5s cubic-bezier(0.25, 1, 0.5, 1);
             
-            /* ESTADO INACTIVO (Default) */
             opacity: 0.3; 
             filter: blur(1.5px);
             transform: scale(0.95);
             transform-origin: left center;
         }
 
-        /* ESTADO ACTIVO (Iluminado) */
         .lyric-line.active {
             opacity: 1;
             filter: blur(0px);
             transform: scale(1);
-            text-shadow: 0 0 20px rgba(255, 255, 255, 0.3); /* Resplandor suave */
+            text-shadow: 0 0 20px rgba(255, 255, 255, 0.3); 
             color: #fff;
         }
 
-        /* Efecto Hover para saltar a esa parte */
         .lyric-line:hover {
             opacity: 0.7;
             filter: blur(0px);
         }
 
-        /* Video Responsive */
         .video-container { position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; border-radius: 16px; }
         .video-container iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }
 
@@ -301,16 +277,9 @@ En resumen, “REM” nos dice que el dolor de un mal de amor puede ser tan fuer
 
             <section class="glass-card">
             <h2>Interpretación video</h2>
-            <p>“REM” de Humbe trata sobre una contradicción dolorosa: intentar dormir para escapar de la tristeza de un amor no correspondido, pero descubrir que en los sueños esa persona está más presente que nunca.<br>
-
-El refugio fallido: Normalmente, dormimos para descansar y desconectar del mundo. Humbe intenta usar el sueño como una huida, cerrando los ojos para que la realidad deje de doler.<br>
-
-La trampa del sueño REM: La fase REM es cuando dormimos más profundo y soñamos más intenso. En la canción, en lugar de encontrar paz, esta fase se convierte en su peor enemigo. Su mente lo traiciona y trae de vuelta los recuerdos de esa persona justo cuando él está indefenso.<br>
-
-La conclusión: No importa cuánto intentes huir o controlar tu mente (como en los sueños lúcidos); si el sentimiento es fuerte, te perseguirá hasta en el descanso.<br>
-
+            <p>
 El significado del video musical<br>
-El video no cuenta una historia lineal, sino que usa imágenes para hacernos sentir lo que pasa dentro de su cabeza. Aquí te explico qué significa cada cosa de forma simple:<br>
+El video no cuenta una historia lineal, sino que usa imágenes para hacernos sentir lo que pasa dentro de su cabeza. Aquí te explicaremos qué significa cada cosa de forma simple:<br>
 
 Oscuridad y espacios vacíos: El video es muy oscuro y minimalista. Esto representa el interior de su mente. Esos espacios vacíos son los rincones donde se esconden los recuerdos que él intenta evitar durante el día.<br>
 
@@ -323,6 +292,8 @@ Luces azules y parpadeos: Las luces frías (azules, violetas) y los cambios ráp
 La soledad absoluta: Humbe sale solo todo el tiempo. Esto nos dice que, al final, nadie puede acompañarte en tus sueños. El dolor de extrañar a alguien se vive en soledad; nadie puede entrar ahí a ayudarte a cargar esa pena.<br>
 
 Todo se repite (El ciclo): Las escenas parecen repetirse y no llegan a ningún lado. Esto refleja cómo se siente su corazón: atrapado en un ciclo donde intenta olvidar, falla, recuerda y vuelve a empezar. No avanza.<br>
+
+la luz "persona": En un momento, una luz azul aparece y se mueve cerca de él. Esta luz puede simbolizar a la persona que extraña. Está ahí, pero no puede alcanzarla ni tocarla, solo observarla desde lejos.<br>
 
 Un final sin solución: El video termina igual que empieza. No hay un final feliz ni un cierre. Esto significa que al despertar, el sentimiento sigue ahí. El sueño no curó nada; el recuerdo de esa persona sigue vivo.</p>
         </section>
@@ -385,16 +356,13 @@ Un final sin solución: El video termina igual que empieza. No hay un final feli
         const audioPlayer = document.getElementById('audio-player');
         const lyricsContainer = document.getElementById('lyrics-container');
 
-        // 2. GENERAR HTML DE LAS LETRAS
         function renderLyrics() {
-            lyricsContainer.innerHTML = ""; // Limpiar
+            lyricsContainer.innerHTML = ""; 
             lyricsData.forEach((line, index) => {
                 const p = document.createElement('div');
                 p.classList.add('lyric-line');
                 p.innerText = line.text;
-                p.dataset.index = index; // Guardar índice
-                
-                // Función extra: Si das click a la letra, la canción salta a ese segundo
+                p.dataset.index = index; 
                 p.addEventListener('click', () => {
                     audioPlayer.currentTime = line.time;
                     audioPlayer.play();
@@ -404,35 +372,29 @@ Un final sin solución: El video termina igual que empieza. No hay un final feli
             });
         }
 
-        // 3. SINCRONIZAR
         function syncLyrics() {
             const currentTime = audioPlayer.currentTime;
             
-            // Buscar cuál es la línea actual
-            // (La última línea cuyo tiempo sea menor o igual al tiempo actual)
             let activeIndex = -1;
             for (let i = 0; i < lyricsData.length; i++) {
                 if (currentTime >= lyricsData[i].time) {
                     activeIndex = i;
                 } else {
-                    break; // Ya pasamos el tiempo, paramos
+                    break; 
                 }
             }
 
-            // Actualizar clases visuales
             const lines = document.querySelectorAll('.lyric-line');
             lines.forEach((line, index) => {
                 if (index === activeIndex) {
                     line.classList.add('active');
                     
-                    // SCROLL solo dentro del contenedor de letras, no la página
                     const container = document.getElementById('lyrics-container');
                     const lineTop = line.offsetTop;
                     const lineHeight = line.offsetHeight;
                     const containerHeight = container.clientHeight;
                     const containerScrollTop = container.scrollTop;
                     
-                    // Calcular scroll para centrar la línea
                     const targetScroll = lineTop - (containerHeight / 2) + (lineHeight / 2);
                     container.scrollTop = targetScroll;
                     
@@ -442,10 +404,8 @@ Un final sin solución: El video termina igual que empieza. No hay un final feli
             });
         }
 
-        // Inicializar
         renderLyrics();
 
-        // Poner la fecha del proyecto debajo del texto de la universidad
         (function setProjectDate(){
             const el = document.getElementById('project-date');
             if (!el) return;
@@ -454,7 +414,6 @@ Un final sin solución: El video termina igual que empieza. No hay un final feli
             el.textContent = now.toLocaleDateString('es-ES', options);
         })();
         
-        // Escuchar el evento de tiempo del audio
         audioPlayer.addEventListener('timeupdate', syncLyrics);
 
     </script>
