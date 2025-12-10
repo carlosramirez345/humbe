@@ -108,13 +108,78 @@
         @keyframes move-2 { 0% {transform:translate(0,0);} 100% {transform:translate(-60vw, -50vh);} }
 
         .navbar {
-            position: fixed; top: 0; width: 100%; z-index: 1000; padding: 15px 0;
+            position: fixed; top: 0; width: 100%; z-index: 1000; padding: 15px 20px;
             background: rgba(5, 10, 20, 0.6); backdrop-filter: blur(20px);
             border-bottom: 1px solid rgba(255,255,255,0.05);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
         .nav-list { display: flex; justify-content: center; list-style: none; gap: 20px; }
         .nav-link { text-decoration: none; color: var(--text-dim); text-transform: uppercase; font-size: 0.8rem; font-weight: 600; letter-spacing: 1px; transition: 0.3s; }
         .nav-link:hover { color: #fff; }
+        
+        .menu-toggle {
+            display: none;
+            background: none;
+            border: none;
+            color: #fff;
+            font-size: 1.5rem;
+            cursor: pointer;
+            z-index: 1001;
+        }
+        
+        @media (max-width: 768px) {
+            .navbar {
+                flex-wrap: wrap;
+            }
+            
+            .menu-toggle {
+                display: block;
+            }
+            
+            .nav-list {
+                position: absolute;
+                top: 60px;
+                left: 0;
+                right: 0;
+                flex-direction: column;
+                background: rgba(5, 10, 20, 0.95);
+                backdrop-filter: blur(20px);
+                gap: 0;
+                max-height: 0;
+                overflow: hidden;
+                transition: max-height 0.3s ease;
+                border-bottom: 1px solid rgba(255,255,255,0.05);
+            }
+            
+            .nav-list.active {
+                max-height: 500px;
+            }
+            
+            .nav-list li {
+                padding: 15px 20px;
+                border-bottom: 1px solid rgba(255,255,255,0.05);
+            }
+            
+            .nav-link {
+                font-size: 0.9rem;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .navbar {
+                padding: 12px 15px;
+            }
+            
+            .nav-list li {
+                padding: 12px 15px;
+            }
+            
+            .nav-link {
+                font-size: 0.85rem;
+            }
+        }
 
         .main-container { max-width: 800px; margin: 100px auto 40px; padding: 0 20px; }
 
@@ -196,7 +261,8 @@
     </div>
 
     <nav class="navbar">
-        <ul class="nav-list">
+        <button class="menu-toggle" id="menu-toggle">☰</button>
+        <ul class="nav-list" id="nav-list">
             <li><a href="#portada" class="nav-link">Portada</a></li>
             <li><a href="#video" class="nav-link">Video</a></li>
             <li><a href="#lyrics" class="nav-link">Letra Sincronizada</a></li>
@@ -220,7 +286,7 @@
             <h3 class="section-label">Descripción</h3>
             <h2>Estética Sonora y Visual</h2>
             <p>
-                En este trabajo realizaré un análisis detallado de la canción "REM" del artista mexicano Humbe. El objetivo principal es descifrar cómo el cantante utiliza tanto la poesía de sus letras como el lenguaje visual de su video para transmitir un mensaje profundo sobre la soledad y la negación ante una ruptura amorosa.
+                En este trabajo realizaremos un análisis detallado de la canción "REM" del artista mexicano Humbe. El objetivo principal es descifrar cómo el cantante utiliza tanto la poesía de sus letras como el lenguaje visual de su video para transmitir un mensaje profundo sobre la soledad y la negación ante una ruptura amorosa.
             </p>
            
         </section>
@@ -316,6 +382,21 @@ Un final sin solución: El video termina igual que empieza. No hay un final feli
     </footer>
 
     <script>
+        // Menu toggle para móvil
+        const menuToggle = document.getElementById('menu-toggle');
+        const navList = document.getElementById('nav-list');
+        
+        menuToggle.addEventListener('click', () => {
+            navList.classList.toggle('active');
+        });
+        
+        // Cerrar menú al hacer clic en un enlace
+        document.querySelectorAll('.nav-link').forEach(link => {
+            link.addEventListener('click', () => {
+                navList.classList.remove('active');
+            });
+        });
+        
         const lyricsData = [
   { time: 0, text: "Me dormí para evitar que te pensara" },
   { time: 7, text: "Qué burla, el lugar donde busco mi paz es donde estabas" },
@@ -430,8 +511,3 @@ Un final sin solución: El video termina igual que empieza. No hay un final feli
     </script>
 </body>
 </html>
-
-
-
-
-
